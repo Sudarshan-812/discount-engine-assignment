@@ -172,3 +172,60 @@ export function processCart(cartItems, rules) {
 export function cartTotal(results) {
   return results.reduce((sum, r) => sum + r.finalPrice, 0)
 }
+
+/**
+ * Evaluates cart-level discount offers across all eligible scope === 'cart' rules.
+ * Finds all rules where subtotal >= (rule.minCartValue ?? 0).
+ * Picks the highest-saving eligible cart rule if multiple match, calculates
+ * discountAmount and finalCartTotal, and returns:
+ *   { ruleId, subtotal, discountAmount, finalCartTotal, minCartValue, label }
+ * Returns null if no cart rule threshold is met or no cart rules exist.
+ */
+export function evaluateCartOffer(itemResults, rules) {
+  if (!itemResults || itemResults.length === 0 || !rules || rules.length === 0) {
+    return null
+  }
+
+  const subtotal = cartTotal(itemResults)
+  const cartRules = rules.filter(
+    (r) => r.scope === 'cart' && subtotal >= (r.minCartValue ?? 0)
+  )
+
+  if (cartRules.length === 0) {
+    return null
+  }
+
+  // Pick highest-saving eligible cart rule
+  let bestRule = null
+  let maxDiscount = -1
+
+  for (const rule of cartRules) {
+    const discount = calculateDiscountAmount(subtotal, rule)
+    if (discount > maxDiscount) {
+      maxDiscount = discount
+      bestRule = rule
+    }
+  }
+
+  if (!bestRule) {
+    return null
+  }
+
+  const discountAmount = maxDiscount
+  const finalCartTotal = Math.max(0, subtotal - discountAmount)
+  const offerTypeDesc =
+    bestRule.type === 'percentage'
+      ? `${bestRule.value}% off`
+      : `Rs.${bestRule.value.toLocaleString('en-IN')} off`
+  const label = `Cart offer (${bestRule.ruleId}): ${offerTypeDesc} — Rs.${discountAmount.toLocaleString('en-IN')} saved`
+
+  return {
+    ruleId: bestRule.ruleId,
+    subtotal,
+    discountAmount,
+    finalCartTotal,
+    minCartValue: bestRule.minCartValue ?? null,
+    label,
+  }
+}
+
