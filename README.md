@@ -5,8 +5,6 @@
 
 A high-performance, deterministic discount evaluation engine built with React, Vite, and an extensible Adapter Architecture. Supports item-level discounts, cart-level threshold offers, natural language rule extraction powered by Gemini, and coordinate-aligned PDF cart parsing.
 
-> **Honesty Note**: Built with Antigravity; I reviewed, hardened, and tested all logic.
-
 ---
 
 ## Quick Start (Run Locally in 3 Steps)
