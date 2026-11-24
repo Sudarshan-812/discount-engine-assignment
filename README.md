@@ -1,7 +1,7 @@
 # Opptra Discount Engine
 
 [![Live Deployment URL](https://img.shields.io/badge/Live%20Demo-TODO__ADD__VERCEL__URL-orange?style=for-the-badge)](https://discount-engine-ashen.vercel.app/)  
-**Loom Walkthrough**: [Watch Loom Demo](TODO_ADD_LOOM_URL)
+**Loom Walkthrough**: [Watch Loom Demo](https://www.loom.com/share/7758d631231f453fa9c9e4d73be945f8)
 
 A high-performance, deterministic discount evaluation engine built with React, Vite, and an extensible Adapter Architecture. Supports item-level discounts, cart-level threshold offers, natural language rule extraction powered by Gemini, and coordinate-aligned PDF cart parsing.
 
