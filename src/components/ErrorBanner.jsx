@@ -7,6 +7,8 @@ export default function ErrorBanner({ errors }) {
   if (!errors || errors.length === 0) return null
   return (
     <div
+      role="alert"
+      aria-live="polite"
       style={{
         background: '#fce8e8',
         border: '1px solid #e57373',
